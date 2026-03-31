@@ -1,0 +1,170 @@
+# ============================================================================
+# CloakID Phase 2: Verification Notebook
+# Robustness Testing against Instruction-based Diffusion Models
+# ============================================================================
+
+# %% — Cell 1: Setup & Installs
+# ============================================================================
+import subprocess, sys
+
+def install(pkg):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "-q", pkg])
+
+print(" Installing AI Generation libraries...")
+for p in ["diffusers", "transformers", "accelerate", "gradio", "torch", "numpy", "pillow"]:
+    install(p)
+
+print(" Dependencies installed.")
+
+# %% — Cell 2: Load Attacker Model
+# ============================================================================
+import torch
+from diffusers import StableDiffusionInstructPix2PixPipeline, EulerAncestralDiscreteScheduler
+from PIL import Image
+import numpy as np
+import gradio as gr
+import warnings
+
+warnings.filterwarnings("ignore")
+
+DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+DTYPE = torch.float16 if DEVICE.type == "cuda" else torch.float32
+
+print(f"  Running on {DEVICE} ({DTYPE})")
+
+print(" Loading Attacker Model (timbrooks/instruct-pix2pix)...")
+# We use InstructPix2Pix because it represents the "Text-Guided Manipulation" threat
+# effectively. It tries to keep the original structure while following the prompt.
+pipe = StableDiffusionInstructPix2PixPipeline.from_pretrained(
+    "timbrooks/instruct-pix2pix",
+    torch_dtype=DTYPE,
+    safety_checker=None
+).to(DEVICE)
+
+# Use Euler Ancestral scheduler for fast, creative edits
+pipe.scheduler = EulerAncestralDiscreteScheduler.from_config(pipe.scheduler.config)
+
+print(" Attacker Model Ready.")
+
+# %% — Cell 3: Attack Logic
+# ============================================================================
+
+def resize_for_ai(img, size=512):
+    """Resize image to standard AI resolution for inference."""
+    return img.convert("RGB").resize((size, size), Image.LANCZOS)
+
+def simulate_attack(
+    original_image: Image.Image,
+    protected_image: Image.Image,
+    instruction: str,
+    steps: int = 30,
+    text_guidance: float = 7.5,
+    image_guidance: float = 1.5,
+    seed: int = 42,
+    progress=gr.Progress(track_tqdm=True)
+):
+    """
+    Runs the AI editing process on both images simultaneously using the same seed.
+    """
+    if original_image is None or protected_image is None:
+        raise gr.Error("Please upload BOTH the Original and Protected images.")
+
+    # 1. Preprocess
+    # We resize to 512x512 because that's the native resolution of the attacker model.
+    # A robust defense (from Phase 1) must survive this resizing.
+    img_orig = resize_for_ai(original_image)
+    img_prot = resize_for_ai(protected_image)
+
+    # 2. Setup Generator (Deterministic for fair comparison)
+    generator = torch.Generator(DEVICE).manual_seed(int(seed))
+
+    print(f" Executing Attack: '{instruction}'")
+
+    # 3. Attack Original (Control Group)
+    result_orig = pipe(
+        prompt=instruction,
+        image=img_orig,
+        num_inference_steps=steps,
+        image_guidance_scale=image_guidance,
+        guidance_scale=text_guidance,
+        generator=generator
+    ).images[0]
+
+    # Reset generator for exact comparison
+    generator = torch.Generator(DEVICE).manual_seed(int(seed))
+
+    # 4. Attack Protected (Experimental Group)
+    result_prot = pipe(
+        prompt=instruction,
+        image=img_prot,
+        num_inference_steps=steps,
+        image_guidance_scale=image_guidance,
+        guidance_scale=text_guidance,
+        generator=generator
+    ).images[0]
+
+    return result_orig, result_prot
+
+# %% — Cell 4: Verification Dashboard (Gradio)
+# ============================================================================
+
+css = """
+.gradio-container {background-color: #1e1e2e}
+h1, h2, h3, p {color: #cdd6f4}
+"""
+
+with gr.Blocks(title="CloakID Verification", theme=gr.themes.Soft(), css=css) as demo:
+    gr.Markdown("#  CloakID Phase 2: Robustness Verification")
+    gr.Markdown(
+        "Upload the **Original Image** and the **Protected Image** (from Phase 1). "
+        "Enter a malicious prompt to see if the defense prevents the AI from editing the identity."
+    )
+
+    with gr.Row():
+        # Input Column
+        with gr.Column(scale=1):
+            gr.Markdown("### 1. Upload Targets")
+            with gr.Row():
+                in_orig = gr.Image(label="Original Image (Unprotected)", type="pil", height=250)
+                in_prot = gr.Image(label="Protected Image (Immunized)", type="pil", height=250)
+
+            gr.Markdown("### 2. Configure Attack")
+            instruction = gr.Textbox(
+                label="Malicious Instruction",
+                value="change the backround color",
+                placeholder="e.g., make him wear a suit, Make him smile..."
+            )
+            
+            with gr.Accordion("Advanced Attack Parameters", open=False):
+                seed = gr.Number(label="Random Seed", value=1234, precision=0)
+                steps = gr.Slider(10, 100, value=30, label="Inference Steps")
+                text_cfg = gr.Slider(1.0, 20.0, value=7.5, label="Text Guidance (Prompt Strength)")
+                img_cfg = gr.Slider(1.0, 5.0, value=1.5, label="Image Guidance (Structure Preservation)")
+
+            attack_btn = gr.Button(" Generate image", variant="stop", size="lg")
+
+        # Output Column
+        with gr.Column(scale=1):
+            gr.Markdown("### 3. Simulation Results")
+            with gr.Row():
+                out_orig = gr.Image(label="Result on Original (Should Succeed)", type="pil")
+                out_prot = gr.Image(label="Result on Protected (Should Fail)", type="pil")
+    
+    # Wire Logic
+    attack_btn.click(
+        fn=simulate_attack,
+        inputs=[in_orig, in_prot, instruction, steps, text_cfg, img_cfg, seed],
+        outputs=[out_orig, out_prot]
+    )
+
+    gr.Markdown("### How to interpret results:")
+    gr.Markdown(
+        "- **Left Image:** If this looks like a high-quality edit, the model works correctly.\n"
+        "- **Right Image:** If this looks like **gray noise, a blurry blob, or unrelated colors**, "
+        "then **CloakID Protection is SUCCESSFUL**."
+    )
+
+# %% — Cell 5: Launch
+# ============================================================================
+print(" Launching Verification Dashboard...")
+demo.queue().launch(share=True, debug=True)
