@@ -86,6 +86,7 @@ Privacy-conscious individuals
 👨‍💻 Author
 
 Syamlal
+Asmi Mohan
 © 2026 All Rights Reserved
 
 ⭐ Contribution
