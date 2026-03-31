@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LatentID - AI Trust & Safety Suite</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Modern Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Ionicons for beautiful, modern iconography -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</head>
+<body>
+    <!-- Background Animated Elements -->
+    <div class="background-blobs">
+        <div class="blob shape-1"></div>
+        <div class="blob shape-2"></div>
+        <div class="blob shape-3"></div>
+    </div>
+
+    <!-- Frosted Glass Navigation -->
+    <nav class="glass-nav">
+        <div class="logo">
+            <ion-icon name="shield-checkmark"></ion-icon>
+            <span>LatentID</span>
+        </div>
+        <div class="nav-links">
+            <a href="#image-protection">Protection</a>
+            <a href="#scanner">Scanner</a>
+            <a href="#detector">Detector</a>
+            <a href="#toxicity">Toxicity</a>
+        </div>
+    </nav>
+
+    <!-- Main App Content -->
+    <main>
+        <header class="hero">
+            <h1>Trust in the Age of AI.</h1>
+            <p>Advanced real-time protection against synthetic media, phishing, and toxic generative content. Secure your digital footprint.</p>
+        </header>
+
+        <section class="tools-grid">
+            <!-- 1. Image Protection Module -->
+            <div class="glass-card tool-card" id="image-protection">
+                <div class="card-header">
+                    <div class="icon-wrapper blue"><ion-icon name="image-outline"></ion-icon></div>
+                    <h2>Image Protection</h2>
+                </div>
+                <p>Apply latent perturbations to prevent AI scraping and facial recognition.</p>
+                
+                <div class="tool-interface">
+                    <!-- Upload Box -->
+                    <div class="upload-area" id="image-upload-area">
+                        <ion-icon name="cloud-upload-outline"></ion-icon>
+                        <p>Drag & drop image here<br>or click to browse</p>
+                        <input type="file" id="image-input" accept="image/*" hidden>
+                    </div>
+                    
+                    <!-- Preview Box (Hidden initially) -->
+                    <div class="preview-area" id="image-preview-area" style="display: none;">
+                        <img id="image-preview" src="" alt="Preview">
+                        <div class="processing-overlay" id="image-processing">
+                            <div class="spinner"></div>
+                            <span id="processing-text">Analyzing image...</span>
+                        </div>
+                    </div>
+                    
+                    <button class="primary-btn" id="btn-protect" disabled>Apply AI Protection</button>
+                    
+                    <!-- Result Box -->
+                    <div class="result-box" id="image-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- 2. Phishing & URL Scanner Module -->
+            <div class="glass-card tool-card" id="scanner">
+                <div class="card-header">
+                    <div class="icon-wrapper red"><ion-icon name="link-outline"></ion-icon></div>
+                    <h2>Phishing & URL Scanner</h2>
+                </div>
+                <p>Detect sophisticated AI-generated phishing sites implicitly.</p>
+                
+                <div class="tool-interface">
+                    <div class="input-group">
+                        <input type="text" id="url-input" placeholder="e.g. https://example.com" autocomplete="off">
+                    </div>
+                    <button class="primary-btn" id="btn-scan-url">Analyze URL</button>
+                    
+                    <!-- Result Box -->
+                    <div class="result-box" id="url-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- 3. Fake News Detector Module -->
+            <div class="glass-card tool-card" id="detector">
+                <div class="card-header">
+                    <div class="icon-wrapper purple"><ion-icon name="newspaper-outline"></ion-icon></div>
+                    <h2>Fake News Detector</h2>
+                </div>
+                <p>Analyze test passages or entire articles for signs of semantic hallucination.</p>
+                
+                <div class="tool-interface">
+                    <textarea id="news-input" placeholder="Paste article text or enter news snippet..."></textarea>
+                    <button class="primary-btn" id="btn-detect-news">Verify Authenticity</button>
+                    
+                    <!-- Result Box -->
+                    <div class="result-box" id="news-result" style="display: none;"></div>
+                </div>
+            </div>
+
+            <!-- 4. Toxicity & AI Text Detection Module -->
+            <div class="glass-card tool-card" id="toxicity">
+                <div class="card-header">
+                    <div class="icon-wrapper orange"><ion-icon name="chatbubble-ellipses-outline"></ion-icon></div>
+                    <h2>Toxicity & AI Models</h2>
+                </div>
+                <p>Identify abusive language and the exact probability of AI authorship.</p>
+                
+                <div class="tool-interface">
+                    <textarea id="toxicity-input" placeholder="Enter text narrative to deeply analyze..."></textarea>
+                    <button class="primary-btn" id="btn-analyze-text">Analyze Content</button>
+                    
+                    <!-- Result Box -->
+                    <div class="result-box" id="text-result" style="display: none;"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- App Logic -->
+    <script src="/static/js/main.js"></script>
+</body>
+</html>
