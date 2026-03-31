@@ -1,207 +1,98 @@
-You are a senior full-stack software engineer, cybersecurity analyst, and product designer with 25+ years of experience building premium-grade AI platforms.
-
-Your task is to generate a COMPLETE, production-quality prototype web application called:
-
-“LatentID – AI Trust & Safety Suite”
-
-This is NOT a basic demo. It must feel like a high-end, Apple-level product with clean architecture, elegant UI, and real-world usability.
-
----
-
-🎯 PRODUCT VISION
-
-LatentID is an AI-powered cybersecurity and digital trust platform that helps users detect, prevent, and understand modern AI-driven threats.
-
-It should be usable by:
-
-- General users
-- Developers
-- Students
-
-The experience must feel:
-
-- Premium
-- Minimal
-- Futuristic
-- Trustworthy
-
----
-
-🧩 CORE MODULES (ALL MUST EXIST)
-
-1. 🖼️ Image Protection (LatentID Core)
-
-- Upload image (drag & drop + click)
-- Preview instantly
-- Apply “AI Protection” (simulate adversarial perturbation)
-- Maintain visual quality
-- Show processing stages:
-  - Analyzing image
-  - Detecting identity features
-  - Applying latent protection
-  - Finalizing output
-- Show before/after comparison
-- Allow download (no compression loss)
-
----
-
-2. 🔗 Phishing & URL Scanner
-
-- Input: URL
-- Output:
-  - Safe / Suspicious / Dangerous
-  - Reason (rule-based + AI explanation)
-- Include:
-  - Domain pattern checks
-  - HTTPS check
-  - Suspicious keywords
-- Add QR Code scanning support (simulate or basic decode)
-
----
-
-3. 📰 Fake News Detector
-
-- Input: text or news URL
-- Output:
-  - Likely Real / Fake / Uncertain
-- Use:
-  - AI summarization (Gemini API)
-  - Heuristic checks (sensational words, source credibility)
-
----
-
-4. 💬 Toxicity & AI Text Detection
-
-- Input: text
-- Output:
-  - Toxicity score
-  - AI-generated probability
-- Use:
-  - Keyword heuristics + Gemini explanation
-
----
-
-5. 🧠 Unified AI Explanation Engine
-
-Every module must provide:
-
-- Clear explanation
-- Risk level
-- Suggested action
-
----
-
-🎨 UI / UX REQUIREMENTS
-
-Design must feel like:
-
-- Apple + Glassmorphism + AI research lab
-
-Visual Style:
-
-- Soft gradients (silver, off-white, light gray)
-- Frosted glass cards
-- Subtle shadows
-- Rounded corners (16px+)
-- No harsh blacks
-
-Layout:
-
-- Hero section: “LatentID”
-- Modular cards for each tool
-- Smooth scrolling single-page app
-
-Animations:
-
-- Fade-in
-- Soft slide transitions
-- Hover elevation
-- Progress loaders
-
----
-
-📱 RESPONSIVENESS
-
-- Mobile-first
-- Fully responsive
-- Touch-friendly UI
-
----
-
-⚙️ TECH STACK
-
-Frontend:
-
-- HTML5
-- CSS3 (Flexbox/Grid)
-- Vanilla JS (or minimal framework)
-
-Backend:
-
-- Python (Flask)
-
-AI Integration:
-
-- Gemini API (for explanations, summaries)
-
----
-
-🔧 FUNCTIONAL REQUIREMENTS
-
-- Real file upload handling
-- Real-time preview
-- Simulated but believable AI processing
-- Clean modular backend routes:
-  - /upload_image
-  - /analyze_url
-  - /analyze_text
-  - /detect_news
-
----
-
-🧪 IMPLEMENTATION STRATEGY
-
-IMPORTANT:
-
-- Do NOT overcomplicate ML models
-- Use:
-  - Rule-based detection
-  - Lightweight processing
-  - Gemini API for intelligence layer
-
-The system should FEEL intelligent, even if partially simulated.
-
----
-
-💎 OUTPUT EXPECTATION
-
-Generate:
-
-1. Complete Flask backend
-2. Clean frontend UI
-3. All modules working end-to-end
-4. Beautiful styling (glassmorphism)
-5. Download functionality
-6. Modular, readable code
-
----
-
-🚫 CONSTRAINTS
-
-- No login system
-- No heavy frameworks
-- Keep performance smooth
-- Avoid unnecessary complexity
-
----
-
-🎯 FINAL GOAL
-
-The final product should look like:
-“A premium AI cybersecurity product that could realistically be turned into a startup.”
-
-NOT a hackathon toy.
-
----
-
-Now generate the FULL working code
+🚀 LatentID / TrustLens AI
+AI-Powered Digital Identity Protection System
+
+A proactive defense system that protects personal images from deepfake generation and AI misuse.
+
+📌 Overview
+
+LatentID (TrustLens AI) is an AI-based cybersecurity system designed to protect human identity in the era of generative AI.
+
+With the rise of diffusion models and deepfake tools, personal images can be manipulated without consent. Instead of detecting misuse after it happens, LatentID prevents misuse before it begins.
+
+The system subtly modifies machine-interpretable features in an image while keeping the visual appearance unchanged to humans.
+
+🎯 Problem Statement Alignment
+
+✔ Build a deepfake and misinformation detection platform
+
+💡 Our Approach:
+Unlike traditional detection systems, LatentID introduces a preventive defense mechanism that stops AI models from accurately reconstructing or manipulating identities.
+
+⚡ Key Features
+🖼️ Image Upload Interface
+Upload face, half-body, or full-body images
+🔍 Face Detection & Processing
+Automatically detects and processes identity features
+🧠 AI-Based Protection Engine
+Applies adversarial perturbations to disrupt AI models
+👁️ Visual Fidelity Preservation
+No visible distortion to human eyes
+⚡ Real-Time Processing Feedback
+Displays steps like:
+Analyzing identity features
+Applying latent protection
+Optimizing AI resistance
+📥 Ultra High-Quality Download
+Export protected images without quality loss
+🧪 Core Technology
+🧠 Latent Space Manipulation
+🔐 Adversarial Noise Injection
+🎯 PGD (Projected Gradient Descent)
+🧬 Diffusion Model Disruption
+🖥️ Computer Vision (OpenCV)
+🏗️ Architecture
+User Upload → Face Detection → Feature Extraction  
+→ Adversarial Protection Engine → Image Reconstruction → Download
+🛠️ Tech Stack
+
+Frontend
+
+HTML5, CSS3, JavaScript
+Responsive UI (Neo-futuristic design)
+
+Backend
+Python
+Flask / Streamlit (future integration)
+
+AI / ML
+PyTorch
+Diffusers
+OpenCV
+
+🚀 How It Works
+User uploads an image
+System detects facial/identity features
+AI applies imperceptible adversarial modifications
+Protected image is generated
+User downloads secure image
+
+🔒 Why This Matters
+Prevents deepfake misuse
+Protects digital identity
+Reduces AI-based fraud and impersonation
+Enables safer social media sharing
+📊 Future Enhancements
+🌐 Cloud-based GPU processing
+📱 Mobile app integration
+🎥 Video protection
+🔎 AI vulnerability scoring system
+🛡️ Real-time safety alerts
+📸 Use Cases
+Social media users
+Influencers
+Journalists
+Public figures
+Privacy-conscious individuals
+👨‍💻 Author
+
+Syamlal
+© 2026 All Rights Reserved
+
+⭐ Contribution
+
+Contributions are welcome!
+Feel free to fork, improve, and submit a pull request.
+
+📜 License
+
+This project is for academic and research purposes.
